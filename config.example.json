@@ -1,0 +1,15 @@
+{
+    "autosave": true,
+    "cpu": true,
+    "opencl": false,
+    "cuda": false,
+    "pools": [
+        {
+            "url": "127.0.0.1:29641",
+            "user": "YOUR_C64_WALLET_ADDRESS_HERE",
+            "pass": "x",
+            "algo": "rx/wow",
+            "coin": null
+        }
+    ]
+}
