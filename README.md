@@ -14,6 +14,11 @@ Features an integrated Commodore 64-themed ncurses TUI with real-time hashrate d
 - 🎮 **Datasette animation** on startup
 - 🚫 **No dev fee** — 0% donation to XMRig developers (removed from fork)
 
+## ⚠️ Current Status: TESTNET
+
+> **C64 Chain is currently in TESTNET phase.** The mainnet has not launched yet.
+> The default config connects to testnet (port 29641). All coins mined on testnet have no value.
+
 ## Quick Start
 
 ### Pre-compiled binary (Ubuntu 24.04 x86_64)
