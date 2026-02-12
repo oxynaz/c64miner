@@ -1,15 +1,20 @@
 {
-    "autosave": true,
-    "cpu": true,
+    "autosave": false,
+    "donate-level": 0,
+    "cpu": {
+        "enabled": true
+    },
     "opencl": false,
     "cuda": false,
     "pools": [
         {
             "url": "127.0.0.1:29641",
             "user": "YOUR_C64_WALLET_ADDRESS_HERE",
-            "pass": "x",
             "algo": "rx/wow",
-            "coin": null
+            "coin": "wownero",
+            "daemon": true,
+            "daemon-poll-interval": 1000
         }
-    ]
+    ],
+    "print-time": 5
 }
