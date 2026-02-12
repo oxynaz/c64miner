@@ -35,10 +35,12 @@ cp config.example.json config.json
 
 ### Run
 ```bash
-./c64miner -c config.json -t $(nproc)
+sudo ./build/c64miner -c config.json -t $(nproc)
 ```
 
-`-t` sets the number of CPU threads to use.
+`-t` sets the number of CPU threads to use. The `config.json` must be in `~/c64miner/` (not in build/).
+
+> **Always run with `sudo`** for best performance. This enables huge pages and MSR register optimizations, which can improve hashrate by 30-50%.
 
 ## Build from source
 
@@ -66,6 +68,12 @@ make -j$(nproc)
 | `user` | Your C64 Chain wallet address |
 | `algo` | `rx/wow` |
 | `-t N` | Number of mining threads |
+
+## Community
+
+- Block Explorer: [c64chain.com](https://c64chain.com)
+- Discord: [discord.gg/MTRgHT8r45](https://discord.gg/MTRgHT8r45)
+- Node & Wallet: [github.com/oxynaz/c64chain](https://github.com/oxynaz/c64chain)
 
 ## Credits & License
 
