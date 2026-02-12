@@ -255,6 +255,7 @@ static const std::map<const char *, Algorithm::Id, aliasCompare> kAlgorithmAlias
                                     ALGO_ALIAS(RX_0,            "rx"),
     ALGO_ALIAS_AUTO(RX_WOW),        ALGO_ALIAS(RX_WOW,          "randomx/wow"),
                                     ALGO_ALIAS(RX_WOW,          "randomwow"),
+                                    ALGO_ALIAS(RX_WOW,          "rx/c64"),
     ALGO_ALIAS_AUTO(RX_ARQ),        ALGO_ALIAS(RX_ARQ,          "randomx/arq"),
                                     ALGO_ALIAS(RX_ARQ,          "randomarq"),
     ALGO_ALIAS_AUTO(RX_GRAFT),      ALGO_ALIAS(RX_GRAFT,        "randomx/graft"),

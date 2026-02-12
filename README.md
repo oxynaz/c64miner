@@ -1,6 +1,6 @@
 # C64 Miner
 
-![C64 Miner](https://img.shields.io/badge/C64_Miner-v0.1-blue)
+![C64 Miner](https://img.shields.io/badge/C64_Miner-v0.2-blue)
 
 **C64 Miner** is the CPU mining software for [C64 Chain](https://github.com/oxynaz/c64chain), forked from [XMRig](https://github.com/xmrig/xmrig).
 
@@ -9,7 +9,7 @@ Features an integrated Commodore 64-themed ncurses TUI with real-time hashrate d
 ## Features
 
 - 🖥️ **C64-themed ncurses TUI** — built into the binary
-- ⚡ **Optimized CPU mining** — RandomX (RandomWOW variant)
+- ⚡ **Optimized CPU mining** — RandomX (rx/c64 variant)
 - 📊 **Real-time stats** — hashrate, accepted, rejected, difficulty
 - 🎮 **Datasette animation** on startup
 - 🚫 **No dev fee** — 0% donation to XMRig developers (removed from fork)
@@ -31,16 +31,18 @@ The miner connects to your local node via RPC. **The node must be running before
 
 ### Option A: Pre-compiled binary (Ubuntu 24.04 x86_64)
 
+Download `c64miner` from [Releases](../../releases), then:
 ```bash
-# Download from GitHub Releases
-wget https://github.com/oxynaz/c64miner/releases/download/v0.1/c64miner-v0.1-ubuntu24-x86_64.tar.gz
-tar xzf c64miner-v0.1-ubuntu24-x86_64.tar.gz
+tar xzf c64miner-v0.2-ubuntu24-x86_64.tar.gz
 mkdir -p ~/c64miner
 mv c64miner ~/c64miner/
+cd ~/c64miner
+cp config.example.json config.json
 ```
 
-### Option B: Build from source
+Edit `config.json` and replace `YOUR_C64_WALLET_ADDRESS_HERE` with your wallet address (see [Configuration](#configuration) below).
 
+### Option B: Build from source
 ```bash
 sudo apt update
 sudo apt install -y build-essential cmake libuv1-dev libssl-dev \
@@ -53,17 +55,17 @@ cmake .. -DWITH_OPENCL=OFF -DWITH_CUDA=OFF
 make -j$(nproc)
 ```
 
-## Configuration
-
-### Create your config.json
-
+After building, create your config:
 ```bash
 cd ~/c64miner
 cp config.example.json config.json
 ```
 
-Edit `config.json` and replace `YOUR_C64_WALLET_ADDRESS_HERE` with your wallet address:
+Edit `config.json` and replace `YOUR_C64_WALLET_ADDRESS_HERE` with your wallet address.
 
+## Configuration
+
+Your `config.json` should look like this:
 ```json
 {
     "autosave": false,
@@ -77,8 +79,8 @@ Edit `config.json` and replace `YOUR_C64_WALLET_ADDRESS_HERE` with your wallet a
         {
             "url": "127.0.0.1:29641",
             "user": "YOUR_C64_WALLET_ADDRESS_HERE",
-            "algo": "rx/wow",
-            "coin": "wownero",
+            "algo": "rx/c64",
+            "coin": "c64chain",
             "daemon": true,
             "daemon-poll-interval": 1000
         }
@@ -89,7 +91,7 @@ Edit `config.json` and replace `YOUR_C64_WALLET_ADDRESS_HERE` with your wallet a
 
 > ⚠️ **Important notes about the config:**
 > - `"daemon": true` is **required**. Without it the miner tries stratum mode and fails.
-> - `"coin": "wownero"` is **required**. This tells XMRig to use the RandomWOW algorithm. C64 Chain uses the same mining algorithm as Wownero.
+> - `"coin": "c64chain"` is **required**. This tells the miner to use the rx/c64 algorithm.
 > - `"url"` must point to your running node's RPC port (`127.0.0.1:29641` for testnet).
 > - The `config.json` file must be in `~/c64miner/` (not inside `~/c64miner/build/`).
 
@@ -99,8 +101,8 @@ Edit `config.json` and replace `YOUR_C64_WALLET_ADDRESS_HERE` with your wallet a
 |-----------|-------|-------------|
 | `url` | `127.0.0.1:29641` | Node RPC address (testnet) |
 | `user` | `9...` | Your C64 Chain wallet address |
-| `algo` | `rx/wow` | Mining algorithm (RandomWOW) |
-| `coin` | `wownero` | **Required** — identifies RandomWOW algorithm |
+| `algo` | `rx/c64` | Mining algorithm |
+| `coin` | `c64chain` | **Required** — identifies the coin and algorithm |
 | `daemon` | `true` | **Required** — enables daemon RPC mode (not stratum) |
 | `daemon-poll-interval` | `1000` | How often to poll for new blocks (ms) |
 | `-t N` | number | Number of CPU threads (leave 1-2 for system) |
@@ -109,6 +111,7 @@ Edit `config.json` and replace `YOUR_C64_WALLET_ADDRESS_HERE` with your wallet a
 
 > ⚠️ **Make sure your C64 Chain node is running first!**
 
+If you built from source:
 ```bash
 cd ~/c64miner
 sudo ./build/c64miner -c config.json -t 2
@@ -125,7 +128,6 @@ Replace `-t 2` with the number of threads you want to use. Leave 1-2 threads fre
 > **Always run with `sudo`** for best performance. This enables huge pages and MSR register optimizations, which can improve hashrate by 30-50%.
 
 ### Run in background with screen
-
 ```bash
 cd ~/c64miner && screen -dmS miner sudo ./build/c64miner -c config.json -t 2
 ```
@@ -139,9 +141,11 @@ View the miner TUI: `screen -r miner` (detach with Ctrl+A then D)
 | Miner exits immediately | Node not running | Start the node first |
 | `connect error` | Wrong RPC port | Check `url` in config.json (testnet: 29641) |
 | `login failed` | Missing `daemon: true` | Add `"daemon": true` in your config.json |
-| `algorithm not found` | Missing `coin` field | Add `"coin": "wownero"` in your config.json |
+| `algorithm not found` | Missing `coin` field | Add `"coin": "c64chain"` in your config.json |
 | Low hashrate | Not running as root | Run with `sudo` for huge pages |
 | `config not found` | Wrong directory | config.json must be in ~/c64miner/, not in build/ |
+
+> **Note:** The old values `"coin": "wownero"` and `"algo": "rx/wow"` are still supported for backward compatibility, but `"coin": "c64chain"` and `"algo": "rx/c64"` are recommended.
 
 ## Community
 
@@ -157,7 +161,9 @@ Licensed under the **GNU General Public License v3.0** — see [LICENSE](LICENSE
 
 Modifications from XMRig:
 - Integrated ncurses TUI with C64 aesthetics
+- Added rx/c64 algorithm alias and c64chain coin support
 - XMRig dev fee removed (0%)
+- Fixed duplicate log lines in TUI
 - Rebranded to C64 Miner
 
 All original XMRig copyrights remain intact.

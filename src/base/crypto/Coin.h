@@ -38,6 +38,7 @@ public:
         GRAFT,
         RAVEN,
         WOWNERO,
+        C64CHAIN,
         ZEPHYR,
         TOWNFORGE,
         YADA,

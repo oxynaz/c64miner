@@ -318,6 +318,7 @@ void run_tui(std::atomic<bool>& stop_signal) {
 
 void xmrig::C64MinerTuiLog::print(uint64_t, int level, const char *line, size_t offset, size_t size, bool colors) {
     if (!line || size == 0) return;
+    if (colors) return;  // Skip colored duplicate — we only process the plain text call
 
     // Get the clean text (without color codes) starting at offset
     std::string msg(line + offset, size - offset);

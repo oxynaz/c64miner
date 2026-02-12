@@ -10,8 +10,8 @@
         {
             "url": "127.0.0.1:29641",
             "user": "YOUR_C64_WALLET_ADDRESS_HERE",
-            "algo": "rx/wow",
-            "coin": "wownero",
+            "algo": "rx/c64",
+            "coin": "c64chain",
             "daemon": true,
             "daemon-poll-interval": 1000
         }
