@@ -52,7 +52,6 @@ static const CoinInfo coinInfo[] = {
     { Algorithm::RX_GRAFT,        "GRFT",     "Graft",        120,    10000000000,    BLUE_BG_BOLD(   WHITE_BOLD_S " graft   ") },
     { Algorithm::KAWPOW_RVN,      "RVN",      "Ravencoin",    0,      0,              BLUE_BG_BOLD(   WHITE_BOLD_S " raven   ") },
     { Algorithm::RX_WOW,          "WOW",      "Wownero",      300,    100000000000,   MAGENTA_BG_BOLD(WHITE_BOLD_S " wownero ") },
-    { Algorithm::RX_WOW,          "C64",      "C64Chain",     300,    100000000000,   MAGENTA_BG_BOLD(WHITE_BOLD_S " c64chain") },
     { Algorithm::RX_0,            "ZEPH",     "Zephyr",       120,    1000000000000,  BLUE_BG_BOLD(   WHITE_BOLD_S " zephyr  ") },
     { Algorithm::RX_0,            "Townforge","Townforge",    30,     100000000,      MAGENTA_BG_BOLD(WHITE_BOLD_S " townforge ") },
     { Algorithm::RX_YADA,         "YDA",      "YadaCoin",     120,    100000000,      BLUE_BG_BOLD(   WHITE_BOLD_S " yada    ") },
@@ -123,6 +122,11 @@ xmrig::Coin::Id xmrig::Coin::parse(const char *name)
 {
     if (name == nullptr || strlen(name) < 3) {
         return INVALID;
+    }
+
+    // C64 CHAIN: alias c64chain to Wownero
+    if (strcasecmp(name, "c64chain") == 0 || strcasecmp(name, "c64") == 0 || strcasecmp(name, "C64Chain") == 0) {
+        return WOWNERO;
     }
 
     for (uint32_t i = 1; i < MAX; ++i) {

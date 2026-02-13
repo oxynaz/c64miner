@@ -192,7 +192,7 @@ bool xmrig::BlockTemplate::parse(bool hashes)
     ar.skip(kNonceSize);
 
     // Wownero block template has miner signature starting from version 18
-    if (m_coin == Coin::WOWNERO && majorVersion() >= 18) {
+    if (m_coin == Coin::WOWNERO && majorVersion() >= 18 && false) { // C64 CHAIN: miner signature disabled
         ar(m_minerSignature, kSignatureSize);
         ar(m_vote);
     }
@@ -234,7 +234,7 @@ bool xmrig::BlockTemplate::parse(bool hashes)
             return false;
         }
     }
-    else if (m_numOutputs < 1 || m_numOutputs > 5) {  // C64 CHAIN: 4 vesting + 1 dev fund
+    else if (m_numOutputs < 1 || m_numOutputs > 5) {
         return false;
     }
 

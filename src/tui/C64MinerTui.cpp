@@ -223,7 +223,7 @@ void run_tui(std::atomic<bool>& stop_signal) {
         snprintf(tmp, sizeof(tmp), "%lu", stats.threads.load());
         print_stat(6, "THREADS:", tmp, CP_NORMAL);
 
-        print_stat(7, "ALGO:", "RX/C64 (CPU-ONLY)", CP_NORMAL);
+        print_stat(7, "ALGO:", "RANDOM C64 (CPU-ONLY)", CP_NORMAL);
 
         {
             std::lock_guard<std::mutex> lock(stats.mtx);
@@ -318,7 +318,6 @@ void run_tui(std::atomic<bool>& stop_signal) {
 
 void xmrig::C64MinerTuiLog::print(uint64_t, int level, const char *line, size_t offset, size_t size, bool colors) {
     if (!line || size == 0) return;
-    if (colors) return;  // Skip colored duplicate — we only process the plain text call
 
     // Get the clean text (without color codes) starting at offset
     std::string msg(line + offset, size - offset);
@@ -466,6 +465,10 @@ void xmrig::C64MinerTuiLog::print(uint64_t, int level, const char *line, size_t 
             display.replace(pos, 5, "C64Miner");
         while ((pos = display.find("xmrig")) != std::string::npos)
             display.replace(pos, 5, "c64miner");
+        while ((pos = display.find("rx/wow")) != std::string::npos)
+            display.replace(pos, 6, "rx/c64");
+        while ((pos = display.find("wownero")) != std::string::npos)
+            display.replace(pos, 7, "c64chain");
     }
 
     // Simplify labels
@@ -479,8 +482,6 @@ void xmrig::C64MinerTuiLog::print(uint64_t, int level, const char *line, size_t 
             display.replace(pos, 11, " SYS  ");
         while ((pos = display.find("  randomx  ")) != std::string::npos)
             display.replace(pos, 11, " RNG  ");
-        while ((pos = display.find("rx/wow")) != std::string::npos)
-            display.replace(pos, 6, "rx/c64");
     }
 
     // Determine color
