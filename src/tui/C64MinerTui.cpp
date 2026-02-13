@@ -223,7 +223,7 @@ void run_tui(std::atomic<bool>& stop_signal) {
         snprintf(tmp, sizeof(tmp), "%lu", stats.threads.load());
         print_stat(6, "THREADS:", tmp, CP_NORMAL);
 
-        print_stat(7, "ALGO:", "RANDOMWOW (CPU-ONLY)", CP_NORMAL);
+        print_stat(7, "ALGO:", "RX/C64 (CPU-ONLY)", CP_NORMAL);
 
         {
             std::lock_guard<std::mutex> lock(stats.mtx);
@@ -479,6 +479,8 @@ void xmrig::C64MinerTuiLog::print(uint64_t, int level, const char *line, size_t 
             display.replace(pos, 11, " SYS  ");
         while ((pos = display.find("  randomx  ")) != std::string::npos)
             display.replace(pos, 11, " RNG  ");
+        while ((pos = display.find("rx/wow")) != std::string::npos)
+            display.replace(pos, 6, "rx/c64");
     }
 
     // Determine color
