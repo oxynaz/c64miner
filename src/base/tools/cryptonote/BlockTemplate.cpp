@@ -234,7 +234,7 @@ bool xmrig::BlockTemplate::parse(bool hashes)
             return false;
         }
     }
-    else if (m_numOutputs < 1 || m_numOutputs > 2) {
+    else if (m_numOutputs < 1 || m_numOutputs > 5) {  // C64 CHAIN: 4 vesting + 1 dev fund
         return false;
     }
 
