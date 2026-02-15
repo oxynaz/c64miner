@@ -1,6 +1,6 @@
 # C64 Miner
 
-![C64 Miner](https://img.shields.io/badge/C64_Miner-v0.2-blue)
+![C64 Miner](https://img.shields.io/badge/C64_Miner-v0.2.1-blue)
 
 **C64 Miner** is the CPU mining software for [C64 Chain](https://github.com/oxynaz/c64chain), forked from [XMRig](https://github.com/xmrig/xmrig).
 
@@ -23,7 +23,7 @@ Features an integrated Commodore 64-themed ncurses TUI with real-time hashrate d
 
 Before mining, you need:
 1. **A running C64 Chain node** — see [c64chain](https://github.com/oxynaz/c64chain) to install and run the node
-2. **A C64 wallet address** — create one with `c64wallet` (see the c64chain README, step 4)
+2. **A C64 wallet address** — create one with `c64wallet` (see the c64chain README)
 
 The miner connects to your local node via RPC. **The node must be running before you start the miner.**
 
@@ -31,41 +31,40 @@ The miner connects to your local node via RPC. **The node must be running before
 
 ### Option A: Pre-compiled binary (Ubuntu 24.04 x86_64)
 
-Download `c64miner` from [Releases](../../releases), then:
+Download `c64miner` from [Releases](https://github.com/oxynaz/c64miner/releases/tag/v0.2.1), then:
 ```bash
-tar xzf c64miner-v0.2-ubuntu24-x86_64.tar.gz
+wget https://github.com/oxynaz/c64miner/releases/download/v0.2.1/c64miner-v0.2.1-ubuntu24-x86_64.tar.gz
+tar xzf c64miner-v0.2.1-ubuntu24-x86_64.tar.gz
 mkdir -p ~/c64miner
 mv c64miner ~/c64miner/
-cd ~/c64miner
-cp config.example.json config.json
 ```
-
-Edit `config.json` and replace `YOUR_C64_WALLET_ADDRESS_HERE` with your wallet address (see [Configuration](#configuration) below).
 
 ### Option B: Build from source
 ```bash
 sudo apt update
 sudo apt install -y build-essential cmake libuv1-dev libssl-dev \
-    libncurses5-dev libncursesw5-dev libhwloc-dev
+    libncurses5-dev libncursesw5-dev libhwloc-dev git
 
 git clone https://github.com/oxynaz/c64miner.git
 cd c64miner
 mkdir build && cd build
-cmake .. -DWITH_OPENCL=OFF -DWITH_CUDA=OFF
+cmake .. -DWITH_OPENCL=OFF -DWITH_CUDA=OFF -DWITH_HWLOC=OFF
 make -j$(nproc)
 ```
 
-After building, create your config:
+### Updating to a new version
 ```bash
 cd ~/c64miner
-cp config.example.json config.json
+git pull --tags
+rm -rf build
+mkdir build && cd build
+cmake .. -DWITH_OPENCL=OFF -DWITH_CUDA=OFF -DWITH_HWLOC=OFF
+make -j$(nproc)
 ```
-
-Edit `config.json` and replace `YOUR_C64_WALLET_ADDRESS_HERE` with your wallet address.
 
 ## Configuration
 
-Your `config.json` should look like this:
+Create a `config.json` in `~/c64miner/`:
 ```json
 {
     "autosave": false,
@@ -93,7 +92,19 @@ Your `config.json` should look like this:
 > - `"daemon": true` is **required**. Without it the miner tries stratum mode and fails.
 > - `"coin": "c64chain"` is **required**. This tells the miner to use the rx/c64 algorithm.
 > - `"url"` must point to your running node's RPC port (`127.0.0.1:29641` for testnet).
-> - The `config.json` file must be in `~/c64miner/` (not inside `~/c64miner/build/`).
+
+### LAN Mining
+
+If another machine on your local network is running the node, point the miner at its local IP instead:
+```json
+{
+    "url": "192.168.X.X:29641",
+    "daemon": true
+}
+```
+
+The node machine must be started with `--rpc-bind-ip=0.0.0.0 --confirm-external-bind`.
+No node needed on the miner-only machines.
 
 ### Config parameters reference
 
@@ -114,22 +125,20 @@ Your `config.json` should look like this:
 If you built from source:
 ```bash
 cd ~/c64miner
-sudo ./build/c64miner -c config.json -t 2
+sudo ./build/c64miner -c config.json -t $(nproc)
 ```
 
 If you downloaded the pre-compiled binary:
 ```bash
 cd ~/c64miner
-sudo ./c64miner -c config.json -t 2
+sudo ./c64miner -c config.json -t $(nproc)
 ```
-
-Replace `-t 2` with the number of threads you want to use. Leave 1-2 threads free for the system.
 
 > **Always run with `sudo`** for best performance. This enables huge pages and MSR register optimizations, which can improve hashrate by 30-50%.
 
 ### Run in background with screen
 ```bash
-cd ~/c64miner && screen -dmS miner sudo ./build/c64miner -c config.json -t 2
+screen -dmS miner bash -c "cd ~/c64miner && sudo ./build/c64miner -c config.json -t \$(nproc)"
 ```
 
 View the miner TUI: `screen -r miner` (detach with Ctrl+A then D)
