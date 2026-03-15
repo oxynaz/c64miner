@@ -76,7 +76,7 @@ Create a `config.json` in `~/c64miner/`:
     "cuda": false,
     "pools": [
         {
-            "url": "127.0.0.1:29641",
+            "url": "127.0.0.1:19641",
             "user": "YOUR_C64_WALLET_ADDRESS_HERE",
             "algo": "rx/c64",
             "coin": "c64chain",
