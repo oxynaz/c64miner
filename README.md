@@ -14,10 +14,8 @@ Features an integrated Commodore 64-themed ncurses TUI with real-time hashrate d
 - 🎮 **Datasette animation** on startup
 - 🚫 **No dev fee** — 0% donation to XMRig developers (removed from fork)
 
-## ⚠️ Current Status: TESTNET
+## ⚠️ Current Status: MAINNET
 
-> **C64 Chain is currently in TESTNET phase.** The mainnet has not launched yet.
-> All coins mined on testnet have no value.
 
 ## Prerequisites
 
@@ -91,14 +89,14 @@ Create a `config.json` in `~/c64miner/`:
 > ⚠️ **Important notes about the config:**
 > - `"daemon": true` is **required**. Without it the miner tries stratum mode and fails.
 > - `"coin": "c64chain"` is **required**. This tells the miner to use the rx/c64 algorithm.
-> - `"url"` must point to your running node's RPC port (`127.0.0.1:29641` for testnet).
+> - `"url"` must point to your running node's RPC port (`127.0.0.1:19641` for testnet).
 
 ### LAN Mining
 
 If another machine on your local network is running the node, point the miner at its local IP instead:
 ```json
 {
-    "url": "192.168.X.X:29641",
+    "url": "192.168.X.X:19641",
     "daemon": true
 }
 ```
@@ -110,7 +108,7 @@ No node needed on the miner-only machines.
 
 | Parameter | Value | Description |
 |-----------|-------|-------------|
-| `url` | `127.0.0.1:29641` | Node RPC address (testnet) |
+| `url` | `127.0.0.1:19641` | Node RPC address (testnet) |
 | `user` | `9...` | Your C64 Chain wallet address |
 | `algo` | `rx/c64` | Mining algorithm |
 | `coin` | `c64chain` | **Required** — identifies the coin and algorithm |
